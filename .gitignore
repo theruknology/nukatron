@@ -1,4 +1,40 @@
-output
-venv
-data
-__pycache__
+# Nukatron .gitignore
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Jupyter/IPython
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Output and results
+results/
+data/output/
+*.log
+
+# Test and coverage
+.coverage
+htmlcov/
+.cache/
+pytest_cache/
+
+# Misc
+*.swp
+*.bak
+*.tmp
+
+# Ignore large data
+*.pdb
+!data/pdb_samples/*.pdb
