@@ -1,0 +1,5 @@
+mdanalysis
+prolif
+rdkit
+pandas
+openbabel-wheel
