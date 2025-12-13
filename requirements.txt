@@ -1,5 +1,33 @@
-mdanalysis
-prolif
-rdkit
-pandas
-openbabel-wheel
+# Nukatron: Production-Grade Tri-Body Structural Analysis Pipeline
+# Python 3.10+ | Linux (Arch)
+# All dependencies pinned for reproducibility
+
+# Core Scientific Stack
+numpy==1.24.4
+pandas==2.0.3
+scipy==1.11.2
+
+# Molecular Dynamics & Structure Analysis
+MDAnalysis==2.5.0
+networkx==3.1
+scikit-learn==1.3.1
+
+# ProLIF: Interaction Fingerprinting (post-dock validation)
+# Note: ProLIF requires specific versions of rdkit and MDAnalysis
+prolif==2.0.3
+
+# Chemical Informatics
+rdkit==2023.09.1
+
+# Visualization & Interactive Outputs
+pyvis==0.3.2
+matplotlib==3.8.0
+
+# Utilities
+tqdm==4.66.1
+click==8.1.7
+pyyaml==6.0.1
+
+# Development & Testing (optional)
+pytest==7.4.3
+pytest-cov==4.1.0

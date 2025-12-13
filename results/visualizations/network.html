@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#FF0000", "id": "LIG_25.0", "label": "LIG_25.0", "node_type": "ligand", "resid": 25.0, "shape": "dot", "size": 40, "title": "LIG_25.0"}, {"color": "#0000FF", "id": "PRO_ARG_222.0", "label": "PRO_ARG_222.0", "node_type": "protein", "resid": 222.0, "resname": "ARG", "shape": "dot", "size": 25, "title": "PRO_ARG_222.0"}, {"color": "#0000FF", "id": "PRO_ASN_221.0", "label": "PRO_ASN_221.0", "node_type": "protein", "resid": 221.0, "resname": "ASN", "shape": "dot", "size": 25, "title": "PRO_ASN_221.0"}, {"color": "#0000FF", "id": "PRO_LYS_219.0", "label": "PRO_LYS_219.0", "node_type": "protein", "resid": 219.0, "resname": "LYS", "shape": "dot", "size": 25, "title": "PRO_LYS_219.0"}, {"color": "#0000FF", "id": "PRO_LYS_171.0", "label": "PRO_LYS_171.0", "node_type": "protein", "resid": 171.0, "resname": "LYS", "shape": "dot", "size": 25, "title": "PRO_LYS_171.0"}, {"color": "#0000FF", "id": "PRO_ILE_172.0", "label": "PRO_ILE_172.0", "node_type": "protein", "resid": 172.0, "resname": "ILE", "shape": "dot", "size": 25, "title": "PRO_ILE_172.0"}, {"color": "#0000FF", "id": "PRO_ARG_173.0", "label": "PRO_ARG_173.0", "node_type": "protein", "resid": 173.0, "resname": "ARG", "shape": "dot", "size": 25, "title": "PRO_ARG_173.0"}, {"color": "#FFA500", "id": "DNA_DG_12.0", "label": "DNA_DG_12.0", "node_type": "dna", "resid": 12.0, "resname": "DG", "shape": "dot", "size": 30, "title": "DNA_DG_12.0"}, {"color": "#FFA500", "id": "DNA_DT_13.0", "label": "DNA_DT_13.0", "node_type": "dna", "resid": 13.0, "resname": "DT", "shape": "dot", "size": 30, "title": "DNA_DT_13.0"}, {"color": "#FFA500", "id": "DNA_DG_14.0", "label": "DNA_DG_14.0", "node_type": "dna", "resid": 14.0, "resname": "DG", "shape": "dot", "size": 30, "title": "DNA_DG_14.0"}, {"color": "#FFA500", "id": "DNA_DT_23.0", "label": "DNA_DT_23.0", "node_type": "dna", "resid": 23.0, "resname": "DT", "shape": "dot", "size": 30, "title": "DNA_DT_23.0"}, {"color": "#FFA500", "id": "DNA_DT_24.0", "label": "DNA_DT_24.0", "node_type": "dna", "resid": 24.0, "resname": "DT", "shape": "dot", "size": 30, "title": "DNA_DT_24.0"}, {"color": "#FFA500", "id": "DNA_DA_11.0", "label": "DNA_DA_11.0", "node_type": "dna", "resid": 11.0, "resname": "DA", "shape": "dot", "size": 30, "title": "DNA_DA_11.0"}, {"color": "#FFA500", "id": "DNA_DC_25.0", "label": "DNA_DC_25.0", "node_type": "dna", "resid": 25.0, "resname": "DC", "shape": "dot", "size": 30, "title": "DNA_DC_25.0"}, {"color": "#FFA500", "id": "DNA_DA_10.0", "label": "DNA_DA_10.0", "node_type": "dna", "resid": 10.0, "resname": "DA", "shape": "dot", "size": 30, "title": "DNA_DA_10.0"}, {"color": "#FFA500", "id": "DNA_DA_21.0", "label": "DNA_DA_21.0", "node_type": "dna", "resid": 21.0, "resname": "DA", "shape": "dot", "size": 30, "title": "DNA_DA_21.0"}, {"color": "#FFA500", "id": "DNA_DC_22.0", "label": "DNA_DC_22.0", "node_type": "dna", "resid": 22.0, "resname": "DC", "shape": "dot", "size": 30, "title": "DNA_DC_22.0"}, {"color": "#FFA500", "id": "DNA_DG_15.0", "label": "DNA_DG_15.0", "node_type": "dna", "resid": 15.0, "resname": "DG", "shape": "dot", "size": 30, "title": "DNA_DG_15.0"}, {"color": "#FFA500", "id": "DNA_DC_20.0", "label": "DNA_DC_20.0", "node_type": "dna", "resid": 20.0, "resname": "DC", "shape": "dot", "size": 30, "title": "DNA_DC_20.0"}, {"color": "#0000FF", "id": "PRO_GLY_220.0", "label": "PRO_GLY_220.0", "node_type": "protein", "resid": 220.0, "resname": "GLY", "shape": "dot", "size": 25, "title": "PRO_GLY_220.0"}, {"color": "#0000FF", "id": "PRO_TRP_215.0", "label": "PRO_TRP_215.0", "node_type": "protein", "resid": 215.0, "resname": "TRP", "shape": "dot", "size": 25, "title": "PRO_TRP_215.0"}, {"color": "#0000FF", "id": "PRO_MET_225.0", "label": "PRO_MET_225.0", "node_type": "protein", "resid": 225.0, "resname": "MET", "shape": "dot", "size": 25, "title": "PRO_MET_225.0"}, {"color": "#0000FF", "id": "PRO_LYS_229.0", "label": "PRO_LYS_229.0", "node_type": "protein", "resid": 229.0, "resname": "LYS", "shape": "dot", "size": 25, "title": "PRO_LYS_229.0"}, {"color": "#0000FF", "id": "PRO_ARG_232.0", "label": "PRO_ARG_232.0", "node_type": "protein", "resid": 232.0, "resname": "ARG", "shape": "dot", "size": 25, "title": "PRO_ARG_232.0"}, {"color": "#0000FF", "id": "PRO_ALA_233.0", "label": "PRO_ALA_233.0", "node_type": "protein", "resid": 233.0, "resname": "ALA", "shape": "dot", "size": 25, "title": "PRO_ALA_233.0"}, {"color": "#0000FF", "id": "PRO_ASN_236.0", "label": "PRO_ASN_236.0", "node_type": "protein", "resid": 236.0, "resname": "ASN", "shape": "dot", "size": 25, "title": "PRO_ASN_236.0"}, {"color": "#0000FF", "id": "PRO_LYS_223.0", "label": "PRO_LYS_223.0", "node_type": "protein", "resid": 223.0, "resname": "LYS", "shape": "dot", "size": 25, "title": "PRO_LYS_223.0"}, {"color": "#0000FF", "id": "PRO_LYS_224.0", "label": "PRO_LYS_224.0", "node_type": "protein", "resid": 224.0, "resname": "LYS", "shape": "dot", "size": 25, "title": "PRO_LYS_224.0"}, {"color": "#0000FF", "id": "PRO_TYR_237.0", "label": "PRO_TYR_237.0", "node_type": "protein", "resid": 237.0, "resname": "TYR", "shape": "dot", "size": 25, "title": "PRO_TYR_237.0"}, {"color": "#0000FF", "id": "PRO_LEU_174.0", "label": "PRO_LEU_174.0", "node_type": "protein", "resid": 174.0, "resname": "LEU", "shape": "dot", "size": 25, "title": "PRO_LEU_174.0"}, {"color": "#0000FF", "id": "PRO_TYR_175.0", "label": "PRO_TYR_175.0", "node_type": "protein", "resid": 175.0, "resname": "TYR", "shape": "dot", "size": 25, "title": "PRO_TYR_175.0"}, {"color": "#0000FF", "id": "PRO_SER_205.0", "label": "PRO_SER_205.0", "node_type": "protein", "resid": 205.0, "resname": "SER", "shape": "dot", "size": 25, "title": "PRO_SER_205.0"}, {"color": "#FFA500", "id": "DNA_DA_5.0", "label": "DNA_DA_5.0", "node_type": "dna", "resid": 5.0, "resname": "DA", "shape": "dot", "size": 30, "title": "DNA_DA_5.0"}, {"color": "#0000FF", "id": "PRO_LYS_208.0", "label": "PRO_LYS_208.0", "node_type": "protein", "resid": 208.0, "resname": "LYS", "shape": "dot", "size": 25, "title": "PRO_LYS_208.0"}, {"color": "#0000FF", "id": "PRO_TYR_227.0", "label": "PRO_TYR_227.0", "node_type": "protein", "resid": 227.0, "resname": "TYR", "shape": "dot", "size": 25, "title": "PRO_TYR_227.0"}, {"color": "#0000FF", "id": "PRO_LYS_245.0", "label": "PRO_LYS_245.0", "node_type": "protein", "resid": 245.0, "resname": "LYS", "shape": "dot", "size": 25, "title": "PRO_LYS_245.0"}, {"color": "#0000FF", "id": "PRO_LYS_249.0", "label": "PRO_LYS_249.0", "node_type": "protein", "resid": 249.0, "resname": "LYS", "shape": "dot", "size": 25, "title": "PRO_LYS_249.0"}, {"color": "#0000FF", "id": "PRO_LEU_250.0", "label": "PRO_LEU_250.0", "node_type": "protein", "resid": 250.0, "resname": "LEU", "shape": "dot", "size": 25, "title": "PRO_LEU_250.0"}, {"color": "#FFA500", "id": "DNA_DA_4.0", "label": "DNA_DA_4.0", "node_type": "dna", "resid": 4.0, "resname": "DA", "shape": "dot", "size": 30, "title": "DNA_DA_4.0"}, {"color": "#FFA500", "id": "DNA_DG_6.0", "label": "DNA_DG_6.0", "node_type": "dna", "resid": 6.0, "resname": "DG", "shape": "dot", "size": 30, "title": "DNA_DG_6.0"}, {"color": "#0000FF", "id": "PRO_ARG_235.0", "label": "PRO_ARG_235.0", "node_type": "protein", "resid": 235.0, "resname": "ARG", "shape": "dot", "size": 25, "title": "PRO_ARG_235.0"}, {"color": "#0000FF", "id": "PRO_LYS_248.0", "label": "PRO_LYS_248.0", "node_type": "protein", "resid": 248.0, "resname": "LYS", "shape": "dot", "size": 25, "title": "PRO_LYS_248.0"}, {"color": "#0000FF", "id": "PRO_THR_251.0", "label": "PRO_THR_251.0", "node_type": "protein", "resid": 251.0, "resname": "THR", "shape": "dot", "size": 25, "title": "PRO_THR_251.0"}, {"color": "#0000FF", "id": "PRO_TYR_252.0", "label": "PRO_TYR_252.0", "node_type": "protein", "resid": 252.0, "resname": "TYR", "shape": "dot", "size": 25, "title": "PRO_TYR_252.0"}, {"color": "#0000FF", "id": "PRO_GLU_228.0", "label": "PRO_GLU_228.0", "node_type": "protein", "resid": 228.0, "resname": "GLU", "shape": "dot", "size": 25, "title": "PRO_GLU_228.0"}, {"color": "#FFA500", "id": "DNA_DC_26.0", "label": "DNA_DC_26.0", "node_type": "dna", "resid": 26.0, "resname": "DC", "shape": "dot", "size": 30, "title": "DNA_DC_26.0"}, {"color": "#FFA500", "id": "DNA_DC_27.0", "label": "DNA_DC_27.0", "node_type": "dna", "resid": 27.0, "resname": "DC", "shape": "dot", "size": 30, "title": "DNA_DC_27.0"}, {"color": "#FFA500", "id": "DNA_DG_8.0", "label": "DNA_DG_8.0", "node_type": "dna", "resid": 8.0, "resname": "DG", "shape": "dot", "size": 30, "title": "DNA_DG_8.0"}, {"color": "#FFA500", "id": "DNA_DG_9.0", "label": "DNA_DG_9.0", "node_type": "dna", "resid": 9.0, "resname": "DG", "shape": "dot", "size": 30, "title": "DNA_DG_9.0"}, {"color": "#FFA500", "id": "DNA_DG_7.0", "label": "DNA_DG_7.0", "node_type": "dna", "resid": 7.0, "resname": "DG", "shape": "dot", "size": 30, "title": "DNA_DG_7.0"}, {"color": "#FFA500", "id": "DNA_DT_32.0", "label": "DNA_DT_32.0", "node_type": "dna", "resid": 32.0, "resname": "DT", "shape": "dot", "size": 30, "title": "DNA_DT_32.0"}]);
+                  edges = new vis.DataSet([{"color": "#CCCCCC", "distance": 4.395247459411621, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.40 \u00c5)", "to": "PRO_ARG_222.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.342320919036865, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.34 \u00c5)", "to": "PRO_ASN_221.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.9619436264038086, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (3.96 \u00c5)", "to": "PRO_LYS_219.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.372631549835205, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.37 \u00c5)", "to": "PRO_LYS_171.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.294644832611084, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.29 \u00c5)", "to": "PRO_ILE_172.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.11628532409668, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.12 \u00c5)", "to": "PRO_ARG_173.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.5919923782348633, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (3.59 \u00c5)", "to": "DNA_DG_12.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.6782033443450928, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (3.68 \u00c5)", "to": "DNA_DT_13.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.223788261413574, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.22 \u00c5)", "to": "DNA_DG_14.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.011491298675537, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.01 \u00c5)", "to": "DNA_DT_23.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.178856372833252, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.18 \u00c5)", "to": "DNA_DT_24.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.236971855163574, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.24 \u00c5)", "to": "DNA_DA_11.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.236149787902832, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.24 \u00c5)", "to": "DNA_DC_25.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.407479286193848, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.41 \u00c5)", "to": "DNA_DA_10.0", "width": 1.0}, {"color": "#00AA00", "distance": 2.1044929027557373, "from": "LIG_25.0", "interaction": "HBond", "title": "HBond (2.10 \u00c5)", "to": "DNA_DA_21.0", "width": 3.0}, {"color": "#CCCCCC", "distance": 4.417640209197998, "from": "LIG_25.0", "interaction": "VdW", "title": "VdW (4.42 \u00c5)", "to": "DNA_DC_22.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.092881202697754, "from": "PRO_ARG_222.0", "interaction": "VdW", "title": "VdW (4.09 \u00c5)", "to": "DNA_DT_24.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.9210774898529053, "from": "PRO_ARG_222.0", "interaction": "VdW", "title": "VdW (3.92 \u00c5)", "to": "DNA_DT_13.0", "width": 1.0}, {"color": "#00AA00", "distance": 3.337700366973877, "from": "PRO_ARG_222.0", "interaction": "HBond", "title": "HBond (3.34 \u00c5)", "to": "DNA_DG_14.0", "width": 3.0}, {"color": "#CCCCCC", "distance": 4.198641300201416, "from": "PRO_ASN_221.0", "interaction": "VdW", "title": "VdW (4.20 \u00c5)", "to": "DNA_DT_24.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.34419059753418, "from": "PRO_ASN_221.0", "interaction": "VdW", "title": "VdW (4.34 \u00c5)", "to": "DNA_DT_23.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.3647260665893555, "from": "PRO_LYS_219.0", "interaction": "VdW", "title": "VdW (4.36 \u00c5)", "to": "DNA_DT_23.0", "width": 1.0}, {"color": "#00AA00", "distance": 2.3588645458221436, "from": "PRO_LYS_219.0", "interaction": "HBond", "title": "HBond (2.36 \u00c5)", "to": "DNA_DC_22.0", "width": 3.0}, {"color": "#CCCCCC", "distance": 3.859632968902588, "from": "PRO_LYS_171.0", "interaction": "VdW", "title": "VdW (3.86 \u00c5)", "to": "DNA_DG_15.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.069873809814453, "from": "PRO_LYS_171.0", "interaction": "VdW", "title": "VdW (4.07 \u00c5)", "to": "DNA_DG_14.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.8737597465515137, "from": "PRO_ARG_173.0", "interaction": "VdW", "title": "VdW (3.87 \u00c5)", "to": "DNA_DC_22.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.354226589202881, "from": "PRO_ARG_173.0", "interaction": "VdW", "title": "VdW (4.35 \u00c5)", "to": "DNA_DA_21.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.9892220497131348, "from": "PRO_ARG_173.0", "interaction": "VdW", "title": "VdW (3.99 \u00c5)", "to": "DNA_DC_20.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.9182772636413574, "from": "DNA_DG_14.0", "interaction": "VdW", "title": "VdW (3.92 \u00c5)", "to": "PRO_GLY_220.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.826824426651001, "from": "DNA_DT_23.0", "interaction": "VdW", "title": "VdW (3.83 \u00c5)", "to": "PRO_TRP_215.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 2.9747488498687744, "from": "DNA_DT_23.0", "interaction": "VdW", "title": "VdW (2.97 \u00c5)", "to": "PRO_MET_225.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.312392711639404, "from": "DNA_DT_23.0", "interaction": "VdW", "title": "VdW (4.31 \u00c5)", "to": "PRO_LYS_229.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.246938228607178, "from": "DNA_DT_23.0", "interaction": "VdW", "title": "VdW (4.25 \u00c5)", "to": "PRO_ARG_232.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.548152446746826, "from": "DNA_DT_23.0", "interaction": "VdW", "title": "VdW (3.55 \u00c5)", "to": "PRO_ALA_233.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.195371627807617, "from": "DNA_DT_23.0", "interaction": "VdW", "title": "VdW (4.20 \u00c5)", "to": "PRO_ASN_236.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.194263935089111, "from": "DNA_DT_24.0", "interaction": "VdW", "title": "VdW (4.19 \u00c5)", "to": "PRO_LYS_223.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.304047107696533, "from": "DNA_DT_24.0", "interaction": "VdW", "title": "VdW (4.30 \u00c5)", "to": "PRO_LYS_224.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.5455029010772705, "from": "DNA_DT_24.0", "interaction": "VdW", "title": "VdW (3.55 \u00c5)", "to": "PRO_MET_225.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.9086410999298096, "from": "DNA_DT_24.0", "interaction": "VdW", "title": "VdW (3.91 \u00c5)", "to": "PRO_LYS_229.0", "width": 1.0}, {"color": "#00AA00", "distance": 3.3607027530670166, "from": "DNA_DT_24.0", "interaction": "HBond", "title": "HBond (3.36 \u00c5)", "to": "PRO_ARG_232.0", "width": 3.0}, {"color": "#CCCCCC", "distance": 3.855293035507202, "from": "DNA_DC_25.0", "interaction": "VdW", "title": "VdW (3.86 \u00c5)", "to": "PRO_LYS_223.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.264021396636963, "from": "DNA_DC_25.0", "interaction": "VdW", "title": "VdW (4.26 \u00c5)", "to": "PRO_LYS_229.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.212181568145752, "from": "DNA_DC_25.0", "interaction": "VdW", "title": "VdW (3.21 \u00c5)", "to": "PRO_ARG_232.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 2.8724753856658936, "from": "DNA_DA_10.0", "interaction": "VdW", "title": "VdW (2.87 \u00c5)", "to": "PRO_ARG_232.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.822237014770508, "from": "DNA_DA_21.0", "interaction": "VdW", "title": "VdW (3.82 \u00c5)", "to": "PRO_TYR_237.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.425320625305176, "from": "DNA_DC_22.0", "interaction": "VdW", "title": "VdW (4.43 \u00c5)", "to": "PRO_LEU_174.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.37251615524292, "from": "DNA_DC_22.0", "interaction": "VdW", "title": "VdW (4.37 \u00c5)", "to": "PRO_TYR_175.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.015294075012207, "from": "DNA_DC_22.0", "interaction": "VdW", "title": "VdW (4.02 \u00c5)", "to": "PRO_TRP_215.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.3777241706848145, "from": "DNA_DC_22.0", "interaction": "VdW", "title": "VdW (4.38 \u00c5)", "to": "PRO_ALA_233.0", "width": 1.0}, {"color": "#00AA00", "distance": 3.380645513534546, "from": "DNA_DC_22.0", "interaction": "HBond", "title": "HBond (3.38 \u00c5)", "to": "PRO_ASN_236.0", "width": 3.0}, {"color": "#CCCCCC", "distance": 3.5112221240997314, "from": "DNA_DC_22.0", "interaction": "VdW", "title": "VdW (3.51 \u00c5)", "to": "PRO_TYR_237.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.8422534465789795, "from": "PRO_SER_205.0", "interaction": "VdW", "title": "VdW (3.84 \u00c5)", "to": "DNA_DA_5.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.028787136077881, "from": "DNA_DA_5.0", "interaction": "VdW", "title": "VdW (4.03 \u00c5)", "to": "PRO_LYS_208.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.05252742767334, "from": "DNA_DA_5.0", "interaction": "VdW", "title": "VdW (4.05 \u00c5)", "to": "PRO_TYR_227.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.194969177246094, "from": "DNA_DA_5.0", "interaction": "VdW", "title": "VdW (4.19 \u00c5)", "to": "PRO_LYS_245.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.457171440124512, "from": "DNA_DA_5.0", "interaction": "VdW", "title": "VdW (4.46 \u00c5)", "to": "PRO_LYS_249.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.996492862701416, "from": "DNA_DA_5.0", "interaction": "VdW", "title": "VdW (4.00 \u00c5)", "to": "PRO_LEU_250.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.9395337104797363, "from": "PRO_LYS_208.0", "interaction": "VdW", "title": "VdW (3.94 \u00c5)", "to": "DNA_DA_4.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.439647674560547, "from": "DNA_DA_4.0", "interaction": "VdW", "title": "VdW (4.44 \u00c5)", "to": "PRO_LYS_249.0", "width": 1.0}, {"color": "#00AA00", "distance": 2.5494630336761475, "from": "PRO_TYR_227.0", "interaction": "HBond", "title": "HBond (2.55 \u00c5)", "to": "DNA_DG_6.0", "width": 3.0}, {"color": "#CCCCCC", "distance": 3.841876745223999, "from": "DNA_DG_6.0", "interaction": "VdW", "title": "VdW (3.84 \u00c5)", "to": "PRO_ARG_235.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.117794513702393, "from": "DNA_DG_6.0", "interaction": "VdW", "title": "VdW (4.12 \u00c5)", "to": "PRO_LYS_245.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.6314644813537598, "from": "DNA_DG_6.0", "interaction": "VdW", "title": "VdW (3.63 \u00c5)", "to": "PRO_LYS_248.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.7513115406036377, "from": "DNA_DG_6.0", "interaction": "VdW", "title": "VdW (3.75 \u00c5)", "to": "PRO_LYS_249.0", "width": 1.0}, {"color": "#00AA00", "distance": 3.148346185684204, "from": "DNA_DG_6.0", "interaction": "HBond", "title": "HBond (3.15 \u00c5)", "to": "PRO_LEU_250.0", "width": 3.0}, {"color": "#CCCCCC", "distance": 3.942171335220337, "from": "DNA_DG_6.0", "interaction": "VdW", "title": "VdW (3.94 \u00c5)", "to": "PRO_THR_251.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.752535581588745, "from": "DNA_DG_6.0", "interaction": "VdW", "title": "VdW (3.75 \u00c5)", "to": "PRO_TYR_252.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.388208866119385, "from": "PRO_GLU_228.0", "interaction": "VdW", "title": "VdW (4.39 \u00c5)", "to": "DNA_DC_26.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.150914192199707, "from": "PRO_GLU_228.0", "interaction": "VdW", "title": "VdW (4.15 \u00c5)", "to": "DNA_DC_27.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.499345779418945, "from": "PRO_ARG_232.0", "interaction": "VdW", "title": "VdW (4.50 \u00c5)", "to": "DNA_DG_8.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.206310272216797, "from": "PRO_ARG_232.0", "interaction": "VdW", "title": "VdW (4.21 \u00c5)", "to": "DNA_DG_9.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 3.7962985038757324, "from": "DNA_DG_8.0", "interaction": "VdW", "title": "VdW (3.80 \u00c5)", "to": "PRO_ARG_235.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.307373046875, "from": "PRO_ARG_235.0", "interaction": "VdW", "title": "VdW (4.31 \u00c5)", "to": "DNA_DG_7.0", "width": 1.0}, {"color": "#CCCCCC", "distance": 4.099172592163086, "from": "DNA_DG_7.0", "interaction": "VdW", "title": "VdW (4.10 \u00c5)", "to": "PRO_LYS_245.0", "width": 1.0}, {"color": "#00AA00", "distance": 3.338639497756958, "from": "DNA_DG_7.0", "interaction": "HBond", "title": "HBond (3.34 \u00c5)", "to": "PRO_TYR_252.0", "width": 3.0}, {"color": "#CCCCCC", "distance": 3.66715669631958, "from": "PRO_LYS_249.0", "interaction": "VdW", "title": "VdW (3.67 \u00c5)", "to": "DNA_DT_32.0", "width": 1.0}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
