@@ -51,7 +51,9 @@ def setup_output_directory(output_dir: str) -> Path:
 
 
 def analyze_single_pdb(pdb_file: str, output_dir: str, 
-                      ligand_resnames: Optional[List[str]] = None) -> dict:
+                      ligand_resnames: Optional[List[str]] = None,
+                      legacy_ps: bool = False,
+                      legacy_pdf: bool = False) -> dict:
     """
     Analyze a single PDB file (full pipeline).
     
@@ -114,6 +116,25 @@ def analyze_single_pdb(pdb_file: str, output_dir: str,
         else:
             logger.info("No water bridges detected")
             results['n_water_bridges'] = 0
+
+        if legacy_ps or legacy_pdf:
+            logger.info("\n[Legacy] Generating Nucplot-style PostScript schematic...")
+            from src.nucplot_legacy import create_legacy_exporter
+
+            exporter = create_legacy_exporter(
+                interactions,
+                water_bridges_df=water_bridges,
+                residue_summary_df=residue_summary,
+                ligand_label=(ligand_resnames[0] if ligand_resnames else None),
+            )
+            if legacy_ps:
+                legacy_ps_path = output_path / 'output.ps'
+                exporter.export(str(legacy_ps_path), title=Path(pdb_file).name)
+                results['outputs']['legacy_ps'] = str(legacy_ps_path)
+            if legacy_pdf:
+                legacy_pdf_path = output_path / 'output.pdf'
+                exporter.export(str(legacy_pdf_path), title=Path(pdb_file).name)
+                results['outputs']['legacy_pdf'] = str(legacy_pdf_path)
         
         # Step 4: Interactive visualization
         logger.info("\n[4/5] Building interactive network visualization...")
@@ -259,6 +280,12 @@ Examples:
     # Verbosity
     parser.add_argument('-v', '--verbose', action='store_true',
                        help='Verbose logging')
+
+    parser.add_argument('--legacy-ps', action='store_true',
+                       help='Generate Nucplot-style legacy PostScript schematic as output.ps')
+
+    parser.add_argument('--legacy-pdf', action='store_true',
+                       help='Generate Nucplot-style legacy PDF schematic as output.pdf')
     
     args = parser.parse_args()
     
@@ -279,7 +306,13 @@ Examples:
                 logger.error(f"PDB file not found: {args.input}")
                 sys.exit(1)
             
-            results = analyze_single_pdb(args.input, args.output, args.ligand_resnames)
+            results = analyze_single_pdb(
+                args.input,
+                args.output,
+                args.ligand_resnames,
+                legacy_ps=args.legacy_ps,
+                legacy_pdf=args.legacy_pdf,
+            )
             
             # Print results
             logger.info("\n" + "=" * 70)

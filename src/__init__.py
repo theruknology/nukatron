@@ -31,11 +31,13 @@ from src.engine import InteractionEngine, create_engine
 from src.water_bridge import WaterBridgeDetector, create_detector
 from src.visualizer import InteractionNetwork, create_visualizer
 from src.batch_ml import BatchProcessor, InteractionFingerprint
+from src.nucplot_legacy import NucplotExporter, create_legacy_exporter
 
 __all__ = [
     'PDBLoader', 'load_pdb',
     'InteractionEngine', 'create_engine',
     'WaterBridgeDetector', 'create_detector',
     'InteractionNetwork', 'create_visualizer',
-    'BatchProcessor', 'InteractionFingerprint'
+    'BatchProcessor', 'InteractionFingerprint',
+    'NucplotExporter', 'create_legacy_exporter'
 ]

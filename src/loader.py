@@ -190,7 +190,7 @@ class PDBLoader:
         Generate a summary of all residues in the system.
         
         Returns:
-            pd.DataFrame: Columns: [resname, resid, n_atoms, group]
+            pd.DataFrame: Columns: [resname, resid, n_atoms, group, segid, chain_id]
         """
         residues = []
         
@@ -198,11 +198,21 @@ class PDBLoader:
             if atoms.n_atoms == 0:
                 continue
             for residue in atoms.residues:
+                segid = getattr(residue, "segid", None)
+                chain_id = None
+                try:
+                    if hasattr(residue.atoms, "chainIDs") and len(residue.atoms.chainIDs) > 0:
+                        chain_id = residue.atoms.chainIDs[0]
+                except Exception:
+                    chain_id = None
+
                 residues.append({
                     'resname': residue.resname,
                     'resid': residue.resnum,
                     'n_atoms': residue.atoms.n_atoms,
-                    'group': group_name
+                    'group': group_name,
+                    'segid': segid,
+                    'chain_id': chain_id
                 })
         
         return pd.DataFrame(residues)

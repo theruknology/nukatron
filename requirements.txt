@@ -23,6 +23,9 @@ rdkit==2023.09.1
 pyvis==0.3.2
 matplotlib==3.8.0
 
+# Simple UI
+streamlit==1.28.2
+
 # Utilities
 tqdm==4.66.1
 click==8.1.7
